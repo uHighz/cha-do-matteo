@@ -1,0 +1,4 @@
+import {z} from 'zod';
+import {route,db,rate,json,guest,idSchema,ApiError} from '@/lib/server/core';
+export const GET=route(async()=>{const {data,error}=await db().from('messages').select('id,name,message,created_at').eq('approved',true).order('created_at',{ascending:false}).limit(100);if(error)throw new ApiError(503,'O mural está indisponível.');return Response.json({items:data});});
+export const POST=route(async(req)=>{await rate(req,'messages',6);const b=z.object({rsvpId:idSchema,name:z.string().trim().min(2).max(120),message:z.string().trim().min(2).max(1500)}).parse(await json(req));await guest(req,b.rsvpId);const {error}=await db().from('messages').insert({rsvp_id:b.rsvpId,name:b.name,message:b.message});if(error)throw new ApiError(503,'Não foi possível enviar o recado.');return Response.json({status:'pending_review'},{status:201});});

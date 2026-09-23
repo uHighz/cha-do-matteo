@@ -1,0 +1,4 @@
+import {z} from 'zod';
+import {route,reservation,json,idSchema,itemsSchema,rpc,bearer,tokenHash,db} from '@/lib/server/core';
+export const GET=route(async(req,ctx)=>{const {id}=await ctx.params;idSchema.parse(id);const r=await reservation(req,id);const {data}=await db().from('reservation_items').select('product_id,delivery,price_cents').eq('reservation_id',id);return Response.json({id:r.id,status:r.status,expiresAt:r.expires_at,amount:r.amount,items:data},{headers:{'Cache-Control':'no-store'}});});
+export const PATCH=route(async(req,ctx)=>{const {id}=await ctx.params;idSchema.parse(id);const r=await reservation(req,id);const b=z.object({items:itemsSchema}).parse(await json(req));const data=await rpc('reserve_gifts',{p_rsvp:r.rsvp_id,p_token_hash:tokenHash(bearer(req)),p_items:b.items,p_id:id});return Response.json(data);});

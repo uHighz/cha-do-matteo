@@ -1,0 +1,5 @@
+import {z} from 'zod';
+import {db,route,json,rate,newToken,tokenHash,ApiError,guest,idSchema,rpc,bearer} from '@/lib/server/core';
+const schema=z.object({name:z.string().trim().min(2).max(120),whatsapp:z.string().transform(v=>v.replace(/\D/g,'')).pipe(z.string().min(10).max(15)),attending:z.boolean(),companions:z.array(z.string().trim().min(2).max(120)).max(5)});
+export const POST=route(async(req)=>{await rate(req,'rsvp',8);const body=schema.parse(await json(req));const token=newToken();const {data,error}=await db().from('rsvps').insert({...body,companions:body.attending?body.companions:[],token_hash:tokenHash(token)}).select('id').single();if(error)throw new ApiError(503,'Não foi possível salvar sua confirmação.');return Response.json({id:data.id,token},{status:201});});
+export const PATCH=route(async(req)=>{await rate(req,'rsvp-edit');const raw=await json(req);const id=idSchema.parse(raw.id);await guest(req,id);const body=schema.parse(raw);await rpc('edit_rsvp',{p_id:id,p_token_hash:tokenHash(bearer(req)),p_name:body.name,p_whatsapp:body.whatsapp,p_attending:body.attending,p_companions:body.attending?body.companions:[]});return Response.json({id});});
