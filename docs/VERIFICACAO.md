@@ -22,3 +22,9 @@
 - GitHub remoto depende da autorização da CLI.
 
 Os testes de integração estão em tests/integration.mjs e removem os registros que criam. Não executar em ambiente com convidados reais sem revisar as pré-condições. A suíte completa não foi declarada aprovada: os itens pendentes acima permanecem abertos.
+
+## Atualização — 24/09/2026
+
+- Checkout InfinitePay habilitado em produção após confirmação da família: Pix e cartão com repasse das taxas ao convidado.
+- Código atualizado para responder webhook no formato documentado e continuar consultando transações iniciadas mesmo quando novos checkouts forem desabilitados.
+- Deploy de produção pronto. Nenhuma compra de teste foi feita; retorno, liquidação e conciliação da primeira transação real seguem sem validação.

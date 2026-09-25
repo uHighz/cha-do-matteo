@@ -16,7 +16,7 @@ export const products: Product[] = [
 {id:'treat-blanket',category:'treat',name:'Manta',description:'Uma manta de malha, aproximadamente 90 × 80 cm.',quantity:5,priceCents:6500},
 {id:'treat-socks',category:'treat',name:'Kit de meias',description:'Um kit com 3 pares de meias para bebê.',quantity:6,priceCents:3000}
 ];
-export const event = {name:'Matteo',date:'2027-03-20T15:00:00-03:00',dateConfirmed:false,address:'Alameda das Acácias, 100 — Pouso Alegre, MG, 37550-000. Salão de festas ao lado da portaria do condomínio.',coordinates:{lat:-22.306887,lng:-45.914635}};
+export const event = {name:'Matteo',date:'2026-11-21T14:00:00-03:00',dateConfirmed:true,address:'Alameda das Acácias, 100 — Pouso Alegre, MG, 37550-000. Salão de festas ao lado da portaria do condomínio.',coordinates:{lat:-22.306887,lng:-45.914635}};
 export const pixKey = '4c6c9111-67a5-4542-8f5f-ebce6e0cb3f8';
 export const giftMessage = `A chegada do Matteo está enchendo nossos corações de alegria e também nossa casinha de novos sonhos.
 

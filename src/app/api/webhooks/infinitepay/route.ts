@@ -1,3 +1,3 @@
 import {route,json,rate} from '@/lib/server/core';
 import {verifyPayment} from '@/lib/server/payments';
-export const POST=route(async(req)=>{await rate(req,'payment-webhook',120);const body=await json(req);return Response.json(await verifyPayment({order_nsu:body.order_nsu,transaction_nsu:body.transaction_nsu,slug:body.invoice_slug||body.slug}));});
+export const POST=route(async(req)=>{await rate(req,'payment-webhook',120);const body=await json(req);try{const result=await verifyPayment({order_nsu:body.order_nsu,transaction_nsu:body.transaction_nsu,slug:body.invoice_slug||body.slug});if(result.status==='pending')return Response.json({success:false,message:'Pagamento ainda não confirmado.'},{status:400});return Response.json({success:true,message:null});}catch{return Response.json({success:false,message:'Não foi possível validar o pagamento; tente novamente.'},{status:400});}});

@@ -10,7 +10,7 @@ export async function infinite(path:string,payload:unknown){
 }
 const proofSchema=z.object({order_nsu:z.string().uuid(),transaction_nsu:z.string().min(1).max(200),slug:z.string().min(1).max(200)});
 export async function verifyPayment(input:unknown){
- paymentsEnabled();const proof=proofSchema.parse(input);
+ const proof=proofSchema.parse(input);
  const {data:order,error}=await db().from('reservations').select('id,amount,checkout_url').eq('id',proof.order_nsu).maybeSingle();
  if(error)throw new ApiError(503,'Não foi possível consultar o pedido.');
  if(!order||order.amount<=0||!order.checkout_url)throw new ApiError(400,'Pedido inválido.');
