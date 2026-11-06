@@ -4,7 +4,7 @@ Convite publicado: https://cha-do-matteo-gamma.vercel.app. Painel: /admin. Conta
 
 ## Implementado localmente
 
-- Convite safari azul, data confirmada em 21/11/2026 às 14h (Brasília), mapa, presença e acompanhantes.
+- Convite safari azul, data confirmada em 21/11/2026 às 12h (Brasília), mapa, presença e acompanhantes.
 - Seleção de fralda e mimo, modalidades independentes, reserva de 15 minutos e controle transacional de estoque preparado em SQL.
 - Checkout InfinitePay ativo em produção; confirmação consultada no servidor e no webhook. Primeira transação real ainda não testada.
 - Mural e fotos moderados, painel com login, recuperação de senha, CSV, preços, quantidades, cancelamento e registro de entrega.
@@ -28,7 +28,7 @@ Repositório Git local inicializado com branch main; envio ao GitHub depende da 
 
 ## Detalhes ainda pendentes
 
-- Data e hora confirmadas: 21/11/2026 às 14h (Brasília).
+- Data e hora confirmadas: 21/11/2026 às 12h (Brasília).
 - Nome do recebedor para compor o QR Pix de contribuição livre; chave já está no catálogo.
 - Configuração da InfinitePay confirmada: Pix e cartão com repasse das taxas ao convidado; Checkout Integrado habilitado pela família.
 - Validar o fluxo com uma transação real e revisar expiração, pagamentos tardios e conciliação antes de considerar a homologação financeira concluída.

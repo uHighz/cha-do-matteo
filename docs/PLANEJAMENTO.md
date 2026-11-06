@@ -9,7 +9,7 @@ Fonte dos dados do convite e catálogo: `src/lib/catalog.ts`.
 ## Evento
 
 - Nome: Matteo.
-- Data confirmada: 21 de novembro de 2026, às 14h, horário de Brasília (America/Sao_Paulo). O campo `dateConfirmed` está verdadeiro.
+- Data confirmada: 21 de novembro de 2026, às 12h, horário de Brasília (America/Sao_Paulo). O campo `dateConfirmed` está verdadeiro.
 - Endereço cadastrado: Alameda das Acácias, 100 — Pouso Alegre, MG, 37550-000. Salão de festas ao lado da portaria do condomínio.
 - Coordenadas cadastradas: latitude -22.306887, longitude -45.914635.
 - Direção visual: tema safári, com leitura e interação adequadas ao celular.

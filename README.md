@@ -4,7 +4,7 @@ Site de convite para o chá de bebê do Matteo, com tema safári, catálogo de f
 
 ## Estado
 
-Versão inicial publicada: https://cha-do-matteo-gamma.vercel.app. Supabase conectado, administrador provisionado e testes de acesso em produção aprovados em 23/09/2026. Data confirmada: 21/11/2026 às 14h (Brasília). Checkout InfinitePay ativo desde 24/09/2026; primeira transação real ainda não testada. Repositório remoto GitHub e recuperação por e-mail ainda pendentes; detalhes em docs/RETOMADA.md.
+Versão inicial publicada: https://cha-do-matteo-gamma.vercel.app. Supabase conectado, administrador provisionado e testes de acesso em produção aprovados em 23/09/2026. Data confirmada: 21/11/2026 às 12h (Brasília). Checkout InfinitePay ativo desde 24/09/2026; primeira transação real ainda não testada. Repositório remoto GitHub e recuperação por e-mail ainda pendentes; detalhes em docs/RETOMADA.md.
 
 ## Desenvolvimento local
 
