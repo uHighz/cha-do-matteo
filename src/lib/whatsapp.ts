@@ -1,4 +1,4 @@
-// Links "clique para conversar" do WhatsApp (wa.me). Nada é enviado pelo site:
+// Links "clique para conversar" do WhatsApp. Nada é enviado pelo site:
 // o link apenas abre a conversa no WhatsApp de quem clicou, com o texto preenchido.
 
 export const defaultNotice = `Oi, {nome}! Tudo bem? 💙
@@ -9,7 +9,7 @@ Todos os detalhes estão no convite: https://cha-do-matteo-gamma.vercel.app
 
 Contamos com você! 🦒🐘`;
 
-/** Converte o número salvo no RSVP para o formato internacional exigido pelo wa.me. */
+/** Converte o número salvo no RSVP para o formato internacional exigido pelo WhatsApp. */
 export function whatsappNumber(raw: string): string | null {
   const digits = raw.replace(/\D/g, '');
   // DDD + número (10 ou 11 dígitos): número brasileiro sem código do país.
@@ -24,10 +24,13 @@ export function firstName(name: string): string {
 }
 
 export function fillNotice(template: string, name: string): string {
-  return template.replaceAll('{nome}', firstName(name));
+  // Aceita {nome}, {{nome}} e variações de maiúsculas/espaços.
+  return template.replace(/\{\{?\s*nome\s*\}\}?/gi, firstName(name));
 }
 
 export function whatsappLink(raw: string, text: string): string | null {
   const number = whatsappNumber(raw);
-  return number ? `https://wa.me/${number}?text=${encodeURIComponent(text)}` : null;
+  // api.whatsapp.com/send preserva emojis; o atalho wa.me os corrompe em alguns
+  // aplicativos (ex.: WhatsApp Desktop no Windows).
+  return number ? `https://api.whatsapp.com/send?phone=${number}&text=${encodeURIComponent(text)}` : null;
 }

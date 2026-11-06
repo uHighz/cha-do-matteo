@@ -22,7 +22,14 @@ test('mensagem usa o primeiro nome e o link codifica o texto', () => {
   assert.match(text, /^Oi, Maria!/);
   assert.match(text, /12h/);
   const link = whatsappLink('35999991234', text);
-  assert.ok(link?.startsWith('https://wa.me/5535999991234?text='));
-  assert.equal(decodeURIComponent(link!.split('?text=')[1]), text);
+  assert.ok(link?.startsWith('https://api.whatsapp.com/send?phone=5535999991234&text='));
+  const url = new URL(link!);
+  assert.equal(url.searchParams.get('text'), text);
+  assert.match(url.searchParams.get('text')!, /💙/);
+  assert.match(url.searchParams.get('text')!, /🦒🐘/);
   assert.equal(whatsappLink('abc', text), null);
+});
+
+test('placeholder aceita chaves duplas e maiúsculas', () => {
+  assert.equal(fillNotice('Oi, {{nome}}! Oi, {Nome}! Oi, { nome }!', 'Bruna Lima'), 'Oi, Bruna! Oi, Bruna! Oi, Bruna!');
 });
