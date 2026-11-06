@@ -38,7 +38,8 @@ export function fillNotice(template: string, name: string): string {
 export type WhatsappMode = 'app' | 'web' | 'phone';
 
 export function defaultMode(userAgent: string): WhatsappMode {
-  return /Android|iPhone|iPad|iPod|Mobile/i.test(userAgent) ? 'phone' : 'app';
+  // No computador, o WhatsApp Web funciona sem instalar nada; o app é opcional.
+  return /Android|iPhone|iPad|iPod|Mobile/i.test(userAgent) ? 'phone' : 'web';
 }
 
 export function whatsappLink(raw: string, text: string, mode: WhatsappMode = 'phone'): string | null {

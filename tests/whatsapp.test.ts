@@ -38,7 +38,7 @@ test('cada modo abre o destino certo, com o mesmo texto', () => {
   assert.ok(web.startsWith('https://web.whatsapp.com/send?phone=5535999991234&text='));
   for (const link of [app, web]) assert.equal(decodeURIComponent(link.split('&text=')[1]), text);
   assert.equal(defaultMode('Mozilla/5.0 (Linux; Android 14) Mobile'), 'phone');
-  assert.equal(defaultMode('Mozilla/5.0 (Windows NT 10.0; Win64; x64)'), 'app');
+  assert.equal(defaultMode('Mozilla/5.0 (Windows NT 10.0; Win64; x64)'), 'web');
 });
 
 test('placeholder aceita chaves duplas e maiúsculas', () => {
