@@ -10,3 +10,4 @@
 .waLink:hover{background:#25643f}
 .table td small.sent{color:#2f7a4f;font-weight:600;margin-bottom:5px}
 @media(max-width:700px){.noticeHead{flex-direction:column}}
+.notice select{max-width:340px}

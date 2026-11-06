@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 // @ts-expect-error Node's native TypeScript runner requires the source extension.
-import { defaultNotice, fillNotice, firstName, whatsappLink, whatsappNumber } from '../src/lib/whatsapp.ts';
+import { defaultMode, defaultNotice, fillNotice, firstName, whatsappLink, whatsappNumber } from '../src/lib/whatsapp.ts';
 
 test('número brasileiro sem código do país recebe 55', () => {
   assert.equal(whatsappNumber('(35) 99999-1234'), '5535999991234');
@@ -28,6 +28,17 @@ test('mensagem usa o primeiro nome e o link codifica o texto', () => {
   assert.match(url.searchParams.get('text')!, /💙/);
   assert.match(url.searchParams.get('text')!, /🦒🐘/);
   assert.equal(whatsappLink('abc', text), null);
+});
+
+test('cada modo abre o destino certo, com o mesmo texto', () => {
+  const text = fillNotice(defaultNotice, 'Bruna');
+  const app = whatsappLink('35999991234', text, 'app')!;
+  const web = whatsappLink('35999991234', text, 'web')!;
+  assert.ok(app.startsWith('whatsapp://send?phone=5535999991234&text='));
+  assert.ok(web.startsWith('https://web.whatsapp.com/send?phone=5535999991234&text='));
+  for (const link of [app, web]) assert.equal(decodeURIComponent(link.split('&text=')[1]), text);
+  assert.equal(defaultMode('Mozilla/5.0 (Linux; Android 14) Mobile'), 'phone');
+  assert.equal(defaultMode('Mozilla/5.0 (Windows NT 10.0; Win64; x64)'), 'app');
 });
 
 test('placeholder aceita chaves duplas e maiúsculas', () => {

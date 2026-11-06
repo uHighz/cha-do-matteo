@@ -28,9 +28,24 @@ export function fillNotice(template: string, name: string): string {
   return template.replace(/\{\{?\s*nome\s*\}\}?/gi, firstName(name));
 }
 
-export function whatsappLink(raw: string, text: string): string | null {
+/**
+ * Como abrir a conversa:
+ * - app: aplicativo WhatsApp do computador (protocolo whatsapp://, sem passar pelo navegador
+ *   e sem o redirecionamento que corrompe emojis);
+ * - web: WhatsApp Web direto (o painel reaproveita sempre a mesma aba);
+ * - phone: aplicativo do celular.
+ */
+export type WhatsappMode = 'app' | 'web' | 'phone';
+
+export function defaultMode(userAgent: string): WhatsappMode {
+  return /Android|iPhone|iPad|iPod|Mobile/i.test(userAgent) ? 'phone' : 'app';
+}
+
+export function whatsappLink(raw: string, text: string, mode: WhatsappMode = 'phone'): string | null {
   const number = whatsappNumber(raw);
-  // api.whatsapp.com/send preserva emojis; o atalho wa.me os corrompe em alguns
-  // aplicativos (ex.: WhatsApp Desktop no Windows).
-  return number ? `https://api.whatsapp.com/send?phone=${number}&text=${encodeURIComponent(text)}` : null;
+  if (!number) return null;
+  const query = `phone=${number}&text=${encodeURIComponent(text)}`;
+  if (mode === 'app') return `whatsapp://send?${query}`;
+  if (mode === 'web') return `https://web.whatsapp.com/send?${query}`;
+  return `https://api.whatsapp.com/send?${query}`;
 }
