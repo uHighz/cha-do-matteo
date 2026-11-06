@@ -11,7 +11,15 @@ Contamos com você! 🦒🐘`;
 
 /** Converte o número salvo no RSVP para o formato internacional exigido pelo WhatsApp. */
 export function whatsappNumber(raw: string): string | null {
-  const digits = raw.replace(/\D/g, '');
+  let digits = raw.replace(/\D/g, '');
+  // Discagem nacional com zero (0 + DDD, ou 0 + operadora + DDD): remove o prefixo.
+  if (digits.startsWith('0')) {
+    digits = digits.replace(/^0+/, '');
+    if (digits.length === 12 || digits.length === 13) digits = digits.slice(2);
+    if (digits.length !== 10 && digits.length !== 11) return null;
+  }
+  // Celular no formato antigo (DDD + 8 dígitos começando com 6–9): acrescenta o nono dígito.
+  if (digits.length === 10 && /^[1-9][1-9][6-9]/.test(digits)) digits = `${digits.slice(0, 2)}9${digits.slice(2)}`;
   // DDD + número (10 ou 11 dígitos): número brasileiro sem código do país.
   if (digits.length === 10 || digits.length === 11) return `55${digits}`;
   // Já informado com código do país (Brasil ou exterior).
@@ -33,7 +41,7 @@ export function fillNotice(template: string, name: string): string {
  * - app: aplicativo WhatsApp do computador (protocolo whatsapp://, sem passar pelo navegador
  *   e sem o redirecionamento que corrompe emojis);
  * - web: WhatsApp Web direto (o painel reaproveita sempre a mesma aba);
- * - phone: aplicativo do celular.
+ * - phone: aplicativo do celular (wa.me).
  */
 export type WhatsappMode = 'app' | 'web' | 'phone';
 
@@ -48,5 +56,6 @@ export function whatsappLink(raw: string, text: string, mode: WhatsappMode = 'ph
   const query = `phone=${number}&text=${encodeURIComponent(text)}`;
   if (mode === 'app') return `whatsapp://send?${query}`;
   if (mode === 'web') return `https://web.whatsapp.com/send?${query}`;
-  return `https://api.whatsapp.com/send?${query}`;
+  // Celular: link curto oficial, que o app do WhatsApp abre direto.
+  return `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
 }

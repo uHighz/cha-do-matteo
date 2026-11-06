@@ -6,7 +6,15 @@ import { defaultMode, defaultNotice, fillNotice, firstName, whatsappLink, whatsa
 test('número brasileiro sem código do país recebe 55', () => {
   assert.equal(whatsappNumber('(35) 99999-1234'), '5535999991234');
   assert.equal(whatsappNumber('3533331234'), '553533331234');
-  assert.equal(whatsappNumber('5599999999'), '555599999999');
+  assert.equal(whatsappNumber('5532221234'), '555532221234');
+});
+
+test('zero na frente e celular sem o nono dígito são corrigidos', () => {
+  assert.equal(whatsappNumber('035999991234'), '5535999991234');
+  assert.equal(whatsappNumber('0 15 35 99999-1234'), '5535999991234');
+  assert.equal(whatsappNumber('3599991234'), '5535999991234');
+  assert.equal(whatsappNumber('3533331234'), '553533331234');
+  assert.equal(whatsappNumber('0123'), null);
 });
 
 test('número com código do país é mantido e inválido é recusado', () => {
@@ -22,7 +30,7 @@ test('mensagem usa o primeiro nome e o link codifica o texto', () => {
   assert.match(text, /^Oi, Maria!/);
   assert.match(text, /12h/);
   const link = whatsappLink('35999991234', text);
-  assert.ok(link?.startsWith('https://api.whatsapp.com/send?phone=5535999991234&text='));
+  assert.ok(link?.startsWith('https://wa.me/5535999991234?text='));
   const url = new URL(link!);
   assert.equal(url.searchParams.get('text'), text);
   assert.match(url.searchParams.get('text')!, /💙/);
