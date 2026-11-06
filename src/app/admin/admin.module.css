@@ -11,3 +11,5 @@
 .table td small.sent{color:#2f7a4f;font-weight:600;margin-bottom:5px}
 @media(max-width:700px){.noticeHead{flex-direction:column}}
 .notice select{max-width:340px}
+.copyLink{display:block;margin-top:7px;padding:0;border:0;background:none;color:#38586a;font-size:11px;text-decoration:underline}
+.liveFeedback:not(:empty){position:sticky;top:0;z-index:5;padding:11px 14px;background:#eef5ef;border:1px solid #cfe0d2;border-radius:6px;color:#2f5a3c}
