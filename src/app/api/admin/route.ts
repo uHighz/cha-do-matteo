@@ -4,7 +4,7 @@ import { requireAdmin } from '@/lib/server/admin-session';
 export const GET=route(async()=>{
   await requireAdmin();const client=db();
   const tables=['rsvps','reservations','messages','photos','catalog_items'] as const;
-  const selects=['id,name,whatsapp,attending,companions,created_at','id,rsvp_id,status,expires_at,amount,created_at,reservation_items(product_id,delivery,price_cents,delivered_at)','id,name,message,approved,created_at','id,name,path,approved,created_at','id,name,kind,price_cents,capacity'];
+  const selects=['id,name,whatsapp,attending,companions,created_at,archived_at','id,rsvp_id,status,expires_at,amount,created_at,reservation_items(product_id,delivery,price_cents,delivered_at)','id,name,message,approved,created_at','id,name,path,approved,created_at','id,name,kind,price_cents,capacity'];
   const results=await Promise.all(tables.map((table,i)=>client.from(table).select(selects[i]).limit(1000)));
   if(results.some(x=>x.error))throw new ApiError(503,'Não foi possível carregar o painel.');
   const data=Object.fromEntries(tables.map((t,i)=>[t,results[i].data]));
@@ -35,4 +35,15 @@ export const PATCH=route(async req=>{
   const {error}=await db().from(body.kind).update({approved:body.approved}).eq('id',body.id);
   if(error)throw new ApiError(503,'Não foi possível salvar a aprovação.');
   return Response.json({ok:true});
+});
+
+export const DELETE=route(async req=>{
+  await requireAdmin();
+  const body=z.object({id:z.string().uuid()}).parse(await json(req));
+  const result=(await rpc('admin_delete_rsvp',{p_id:body.id})) as {photo_paths:string[];archived:boolean};
+  if(result.photo_paths.length){
+    const {error}=await db().storage.from('guest-photos').remove(result.photo_paths);
+    if(error) console.error('Could not remove deleted guest photo files:',error.message);
+  }
+  return Response.json({ok:true,archived:result.archived});
 });
